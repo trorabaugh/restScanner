@@ -1,0 +1,27 @@
+{
+    "data": [
+        {
+            "URL": "http://localhost:9000/jsonxss/JSON.php?getdata=2",
+            "method": "GET",
+            "body": "",
+            "http-header": {
+                "Content-Type": "text/html",
+                "Host": "localhost"
+            }
+        },
+        {
+            "URL" : "http://test.com/a/b",
+            "method": "POST",
+            "body" : { 
+             
+                "x" : "1" ,
+                "y" : "2" 
+            
+              },
+            "http-header": {
+                "Content-Type": "application/json",
+                "Host": "test.com"
+            }
+        }
+    ]
+}
