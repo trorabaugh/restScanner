@@ -1,16 +1,16 @@
 {
     "data": [
         {
-            "URL": "http://localhost:9000/jsonxss/JSON.php?getdata=2",
+            "URL": "http://localhost:8888/jsonxss/JSON.php?getdata=2",
             "method": "GET",
             "body": "",
-            "http-header": {
+            "HTTPHeader": {
                 "Content-Type": "text/html",
                 "Host": "localhost"
             }
-        },
+        },    
         {
-            "URL" : "http://test.com/a/b",
+            "URL" : "http://localhost:8888/a/b",
             "method": "POST",
             "body" : { 
              
@@ -18,9 +18,9 @@
                 "y" : "2" 
             
               },
-            "http-header": {
-                "Content-Type": "application/json",
-                "Host": "test.com"
+            "HTTPHeader": {
+                "Content-Type": "text/plain",
+                "charset": "UTF-8"
             }
         }
     ]

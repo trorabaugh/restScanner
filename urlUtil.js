@@ -27,7 +27,6 @@ var  recreateUrl = function (httpData){
     path : '',
     auth : httpData.auth,
     headers : httpData.HTTPHeader,
-    body : ''
   };
   if (httpData.method == 'GET'){
     tempPath = httpData.pathname + '?';
@@ -54,12 +53,10 @@ var  recreateUrl = function (httpData){
 	
 	var newTemp = {};
 	newTemp.prototype = options;
-  //console.log(options);
   return options;
 }
 
 var createJsonUrl = function (parsedJson){
-  //console.log(parsedJson.data.length);
   var urlObjs = [];
   for(var i = 0; i < parsedJson.data.length; i++){
     urlObjs.push(parse(parsedJson.data[i].URL));
