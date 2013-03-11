@@ -1,7 +1,32 @@
 var url = require('./urlUtil.js');
-//var httpReq = require('./sendReq.js');
 var parsejson = require('./readJson.js');
 var attackModules = require('./attackModules.js');
+var attackName = process.argv[2];
+//var attackList = {};
+
+var selectAttack = function(attackList) {
+  console.log(attackList);
+  if(attackName == undefined){
+    console.log("You did not enter attack name");
+    process.exit(1);
+  } else {
+    var attackStr = Object.keys(attackList);
+    var attackFound = 0;
+    for(var i=0; i<attackStr.length; i++){
+      if(attackStr == attackName){
+        attackFound = 1;
+      }
+    }
+    if(attackFound == 0){
+      console.log("Attack Not found Possible attack Strings are:");
+      console.log(attackStr);
+      process.exit(1);
+    } else {
+      //console.log(attackList);
+      var parsedJson = parsejson.getParsedjson('input.json', createOptions);
+    }
+  }
+}
 
 var createOptions = function(parsedJson) {
   urlObjs = url.createJsonUrl(parsedJson);
@@ -42,26 +67,8 @@ var createOptions = function(parsedJson) {
     }
     httpData.push(temp);
   }
-  attackModules.giveDataAttack(httpData);
+  //console.log(attackList);
+  attackModules.giveDataAttack(httpData, attackName);
 }
 
-var parsedJson = parsejson.getParsedjson('input.json', createOptions);
-
-//responseCallback = function(response){
-  //console.log(response)
-//}
-
-//urlObj = new Object();
-//urlObj = url.parse("http://google.com/a/b?x=1&y=2");
-//urlObj.host = "www.yahoo.com"
-//console.log(urlObj.host);
-//console.log(url.recreate(urlObj));
-/*Object.keys(parsedJson.data[1].body).forEach(function(key){
-    console.log(parsedJson.data[1].body[key])
-    });
-  */
-//var options = {
-//  host: urlObj.host,
-//  path: urlObj.path
-//};
-//httpReq.sendReq(options, responseCallback);
+attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
