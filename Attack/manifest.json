@@ -1,3 +1,4 @@
 {
-  "sqli" : "sqlinjection.js"
+  "sqli" : "sqlinjection.js",
+  "appexp":"appexception.js"
 }

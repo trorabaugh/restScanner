@@ -13,7 +13,7 @@ var selectAttack = function(attackList) {
     var attackStr = Object.keys(attackList);
     var attackFound = 0;
     for(var i=0; i<attackStr.length; i++){
-      if(attackStr == attackName){
+      if(attackStr[i] == attackName){
         attackFound = 1;
       }
     }
