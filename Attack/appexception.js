@@ -17,18 +17,17 @@ var executeAttack = function(httpDataObject){
 			
 			vulnURLsArray.push(urlNew);
 			httpDataObject.query[i].value = originalValue;
-			console.log("Vuln array length is:"+vulnURLsArray.length);
 			}
     }
     //console.log(vulnURLsArray);
 			//Execute attack requests
 
 		for(var index=0;index<vulnURLsArray.length;index++){
-			console.log("I am injecting URL as:"+vulnURLsArray[index].path);
+			//console.log("I am injecting URL as:"+vulnURLsArray[index].path);
 			(function(urlObject){
         
 				if(urlObject.method == 'GET'){
-        console.log(urlObject);
+      //  console.log(urlObject);
 				  http.request(urlObject, function(res){
 					  res.setEncoding('utf8');
 					  var str = '';
@@ -48,7 +47,7 @@ var executeAttack = function(httpDataObject){
 					  });
 					}).end();
 				} else if(urlObject.method == 'POST'){
-        console.log(urlObject);
+       // console.log(urlObject);
             var req = http.request(urlObject, function(res){
 					    res.setEncoding('utf8');
 					    var str = '';
@@ -59,7 +58,7 @@ var executeAttack = function(httpDataObject){
 					    res.on('end', function () {
 					      for(var detectionIndex = 0;detectionIndex<detectionArray.length;detectionIndex++){
 						      var regExp = new RegExp(detectionArray[detectionIndex]);
-                  console.log(str);
+                 // console.log(str);
 						      if(str.match(regExp))
 						        console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
 		            }
@@ -67,7 +66,7 @@ var executeAttack = function(httpDataObject){
 					    res.on('error',function(err){
 					      console.log("Error while getting response.Error was:"+err);
 					    });
-              console.log(urlObject.body);
+            //  console.log(urlObject.body);
            
 				    });
             req.write(urlObject.body);

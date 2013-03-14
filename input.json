@@ -1,27 +1,14 @@
 {
     "data": [
         {
-            "URL": "http://localhost:8888/jsonxss/JSON.php?getdata=2",
+            "URL": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3",
             "method": "GET",
             "body": "",
             "HTTPHeader": {
                 "Content-Type": "text/html",
-                "Host": "localhost"
+                "Host": "webscantest.com"
             }
-        },    
-        {
-            "URL" : "http://localhost:8888/a/b",
-            "method": "POST",
-            "body" : { 
-             
-                "x" : "1" ,
-                "y" : "2" 
-            
-              },
-            "HTTPHeader": {
-                "Content-Type": "text/plain",
-                "charset": "UTF-8"
-            }
-        }
+        
+		}
     ]
 }
