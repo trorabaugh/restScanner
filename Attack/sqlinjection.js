@@ -1,4 +1,5 @@
 var url = require('../urlUtil.js');
+var report = require('../report.js');
 var http = require('http');
 var vulnURLsArray = [];
 var injectableList = ['*', '\'','"'];
@@ -21,10 +22,10 @@ var executeAttack = function(httpDataObject){
     }
     //console.log(vulnURLsArray);
 			//Execute attack requests
-
+    //var reportObj = [];
 		for(var index=0;index<vulnURLsArray.length;index++){
 			//console.log("I am injecting URL as:"+vulnURLsArray[index].path);
-			(function(urlObject){
+			(function(urlObject, index){
         
 				if(urlObject.method == 'GET'){
       //  console.log(urlObject);
@@ -38,8 +39,16 @@ var executeAttack = function(httpDataObject){
 					  res.on('end', function () {
 					    for(var detectionIndex = 0;detectionIndex<detectionArray.length;detectionIndex++){
 						    var regExp = new RegExp(detectionArray[detectionIndex]);
-						    if(str.match(regExp))
-							    console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
+						    if(str.match(regExp)){
+                  var reportTuple = [];
+                  reportTuple.push(urlObject.path);
+                  reportTuple.push(urlObject.field);
+                  //reportObj.push(reportTuple);
+                  //console.log(reportObj);
+                  console.log(index);
+                  report.startReport(reportTuple);
+							    //console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
+                }
     					}
 					  });
 					  res.on('error',function(err){
@@ -72,7 +81,7 @@ var executeAttack = function(httpDataObject){
             req.write(urlObject.body);
             req.end();
         }
-     })(vulnURLsArray[index]);
+     })(vulnURLsArray[index], index);
   }
 }
 
