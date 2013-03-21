@@ -1,5 +1,7 @@
 var fs = require('fs');
 
+var logStream = fs.createWriteStream('log.txt', {flags:'a'});
+
 var startReport = function(reportObj){
   console.log(reportObj);
   var str = '';
@@ -7,9 +9,7 @@ var startReport = function(reportObj){
     str += reportObj[i] + " ";
   }
   str += "\r\n";
-  fs.appendFileSync('log.txt', str, 'utf8', function (err) {
-    console.log("error writing file");
-  });
+  logStream.write(str);
 }
 
 exports.startReport = startReport;
