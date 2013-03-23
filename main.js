@@ -45,6 +45,10 @@ var createOptions = function(parsedJson) {
     temp.hostname = urlObjs[i].hostname;
     temp.port = urlObjs[i].port;
     temp.pathname = urlObjs[i].pathname;
+    temp.pathvalues = urlObjs[i].pathname.split("/");
+    //console.log("path values: " + urlObjs[i].pathname.split("/").join("/"));
+    //var tp = urlObjs[i].pathname.split("/");
+    //console.log(tp[1]);
     temp.query = [];
     if(parsedJson.data[i].method == 'GET'){
       var keys = Object.keys(urlObjs[i].query);
@@ -67,6 +71,7 @@ var createOptions = function(parsedJson) {
     }
     httpData.push(temp);
   }
+  //console.log(httpData);
   //console.log(attackList);
   attackModules.giveDataAttack(httpData, attackName);
 }

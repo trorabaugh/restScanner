@@ -18,15 +18,16 @@ var parse = function (fullUrl){
 var  recreateUrl = function (httpData){
     
 		var options = {};
-  //console.log(httpData);
-   options = {
-    host : httpData.host,
-    hostname : httpData.hostname,
-    port : httpData.port,
-    method : httpData.method,
-    path : '',
-    auth : httpData.auth,
-    headers : httpData.HTTPHeader,
+    httpData.pathname = httpData.pathvalues.join("/");
+    console.log(httpData);
+    options = {
+      host : httpData.host,
+      hostname : httpData.hostname,
+      port : httpData.port,
+      method : httpData.method,
+      path : '',
+      auth : httpData.auth,
+      headers : httpData.HTTPHeader,
   };
   if (httpData.method == 'GET'){
     tempPath = httpData.pathname + '?';
