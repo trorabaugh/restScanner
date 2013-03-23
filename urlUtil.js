@@ -19,7 +19,7 @@ var  recreateUrl = function (httpData){
     
 		var options = {};
     httpData.pathname = httpData.pathvalues.join("/");
-    console.log(httpData);
+    //console.log(httpData);
     options = {
       host : httpData.host,
       hostname : httpData.hostname,
