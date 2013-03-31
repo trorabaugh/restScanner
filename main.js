@@ -2,7 +2,9 @@ var url = require('./urlUtil.js');
 var parsejson = require('./readJson.js');
 var attackModules = require('./attackModules.js');
 var attackName = process.argv[2];
-//var attackList = {};
+var attackData = process.argv[3];
+
+console.log(attackData);
 
 var selectAttack = function(attackList) {
   console.log(attackList);
@@ -75,5 +77,9 @@ var createOptions = function(parsedJson) {
   //console.log(attackList);
   attackModules.giveDataAttack(httpData, attackName);
 }
+
+process.on("exit", function(){
+ console.log("killing child main");
+});
 
 attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
