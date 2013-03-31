@@ -2,15 +2,17 @@ var url = require('./urlUtil.js');
 var parsejson = require('./readJson.js');
 var attackModules = require('./attackModules.js');
 var attackName = process.argv[2];
-var attackData = process.argv[3];
+var attackData = '';
+var restCall = 0;
 
-console.log(attackData);
+//console.log(attackData);
 
 var selectAttack = function(attackList) {
   console.log(attackList);
   if(attackName == undefined){
+    console.log(restCall);
     console.log("You did not enter attack name");
-    process.exit(1);
+    //process.exit(1);
   } else {
     var attackStr = Object.keys(attackList);
     var attackFound = 0;
@@ -22,10 +24,15 @@ var selectAttack = function(attackList) {
     if(attackFound == 0){
       console.log("Attack Not found Possible attack Strings are:");
       console.log(attackStr);
-      process.exit(1);
+      //process.exit(1);
     } else {
       //console.log(attackList);
-      var parsedJson = parsejson.getParsedjson('input.json', createOptions);
+      if(restCall == 1){
+        var parsedJson = JSON.parse(attackData);
+        createOptions(parsedJson);
+      } else {
+        var parsedJson = parsejson.getParsedjson('input.json', createOptions);
+      }
     }
   }
 }
@@ -48,9 +55,6 @@ var createOptions = function(parsedJson) {
     temp.port = urlObjs[i].port;
     temp.pathname = urlObjs[i].pathname;
     temp.pathvalues = urlObjs[i].pathname.split("/");
-    //console.log("path values: " + urlObjs[i].pathname.split("/").join("/"));
-    //var tp = urlObjs[i].pathname.split("/");
-    //console.log(tp[1]);
     temp.query = [];
     if(parsedJson.data[i].method == 'GET'){
       var keys = Object.keys(urlObjs[i].query);
@@ -78,8 +82,19 @@ var createOptions = function(parsedJson) {
   attackModules.giveDataAttack(httpData, attackName);
 }
 
-process.on("exit", function(){
- console.log("killing child main");
-});
+var startMain = function(attack, attackJson){
+  attackName = attack;
+  restCall = 1;
+  attackData = attackJson;
+  attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
+}
 
-attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
+var main = function(){
+    attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
+}
+
+if (require.main === module) {
+    main();
+}
+
+exports.startMain = startMain;
