@@ -1,0 +1,6 @@
+REST Style Web Scanner in node.js
+
+1. Please install node http://nodejs.org/download/  based on your system configuration. Current set-up is tested on Windows
+2. Modify input.json with your URLs.
+3. Change manifest file for attacks. Currently, SQL Injection and Application Exception are supported.
+4. Call main.js as      node main.js <attack name>
