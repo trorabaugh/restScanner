@@ -1,8 +1,19 @@
+/*
+	This is SQL Injection attack module
+	This tries to find Database Error Messages. Blind, Union, Time based SQL Injections are not yet detected
+
+
+*/
+
 var url = require('../urlUtil.js');
 var http = require('http');
 var vulnURLsArray = [];
-var injectableList = ['*', ';'];
-var detectionArray = ['error occured','exception'];
+
+//This is injection list
+var injectableList = ['*', ';','~','%2527','AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa','||','<>','-/@#$','^','!','@','<!-->','<TestId>','[]'];
+
+//This is detection list
+var detectionArray = ['Fatal error','exception','stack trace','(.*\\bERROR\\b.*)\\r?\\n(.*\\r?\\n)*(.*\\bat\\b.*)*(\\d{1,4}\\)\\r?\\n)'];
 
 var executeAttack = function(httpDataObject){
   for(var i=0; i<httpDataObject.query.length; i++){
@@ -19,15 +30,13 @@ var executeAttack = function(httpDataObject){
 			httpDataObject.query[i].value = originalValue;
 			}
     }
-    //console.log(vulnURLsArray);
+   
 			//Execute attack requests
 
 		for(var index=0;index<vulnURLsArray.length;index++){
-			//console.log("I am injecting URL as:"+vulnURLsArray[index].path);
 			(function(urlObject){
         
 				if(urlObject.method == 'GET'){
-      //  console.log(urlObject);
 				  http.request(urlObject, function(res){
 					  res.setEncoding('utf8');
 					  var str = '';
@@ -47,7 +56,7 @@ var executeAttack = function(httpDataObject){
 					  });
 					}).end();
 				} else if(urlObject.method == 'POST'){
-       // console.log(urlObject);
+      
             var req = http.request(urlObject, function(res){
 					    res.setEncoding('utf8');
 					    var str = '';
@@ -58,7 +67,7 @@ var executeAttack = function(httpDataObject){
 					    res.on('end', function () {
 					      for(var detectionIndex = 0;detectionIndex<detectionArray.length;detectionIndex++){
 						      var regExp = new RegExp(detectionArray[detectionIndex]);
-                 // console.log(str);
+                
 						      if(str.match(regExp))
 						        console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
 		            }
@@ -66,7 +75,7 @@ var executeAttack = function(httpDataObject){
 					    res.on('error',function(err){
 					      console.log("Error while getting response.Error was:"+err);
 					    });
-            //  console.log(urlObject.body);
+          
            
 				    });
             req.write(urlObject.body);
