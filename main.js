@@ -8,12 +8,12 @@
 
 */
 
-
 var url = require('./urlUtil.js');
 var parsejson = require('./readJson.js');
 var attackModules = require('./attackModules.js');
 var attackName = process.argv[2];
-var attackData = process.argv[3];
+var attackData = '';
+var restCall = 0;
 
 /*
 	This function checks whether main.js is called with corrrect paramaters
@@ -22,11 +22,13 @@ var attackData = process.argv[3];
 
 
 */
-var selectAttack = function(attackList) {
-  
+var selectAttack = function(attackList, id) {
+
+  console.log(id);
   if(attackName == undefined){
+    console.log(restCall);
     console.log("You did not enter attack name");
-    process.exit(1);
+
   } else {
     var attackStr = Object.keys(attackList);
     var attackFound = 0;
@@ -38,10 +40,13 @@ var selectAttack = function(attackList) {
     if(attackFound == 0){
       console.log("Attack Not found Possible attack Strings are:");
       console.log(attackStr);
-      process.exit(1);
     } else {
-      
-      var parsedJson = parsejson.getParsedjson('input.json', createOptions);
+      if(restCall == 1){
+        var parsedJson = JSON.parse(attackData);
+        createOptions(parsedJson, id);
+      } else {
+        var parsedJson = parsejson.getParsedjson('input.json', createOptions, id);
+      }
     }
   }
 }
@@ -52,9 +57,8 @@ var selectAttack = function(attackList) {
 	@@Input: This method parses URL objects, converts it to node options
 
 */
-var createOptions = function(parsedJson) {
+var createOptions = function(parsedJson, id) {
   urlObjs = url.createJsonUrl(parsedJson);
-  
   var httpData = [];
   for(var i=0; i<urlObjs.length; i++){
     var temp = new Object();
@@ -69,7 +73,6 @@ var createOptions = function(parsedJson) {
     temp.port = urlObjs[i].port;
     temp.pathname = urlObjs[i].pathname;
     temp.pathvalues = urlObjs[i].pathname.split("/");
-    
     temp.query = [];
     if(parsedJson.data[i].method == 'GET'){
       var keys = Object.keys(urlObjs[i].query);
@@ -92,11 +95,32 @@ var createOptions = function(parsedJson) {
     }
     httpData.push(temp);
   }
-  
-  //Attacker module
-  attackModules.giveDataAttack(httpData, attackName);
+  //Attack Module
+  attackModules.giveDataAttack(httpData, attackName, id);
+}
+
+/*
+  This method is to start when project is run as rest. Called from rest.js
+  @@input: attack name as string, json data attack details, and attack id to 
+    generate report.
+*/
+var startMain = function(attack, attackJson, id){
+  attackName = attack;
+  restCall = 1;
+  attackData = attackJson;
+  attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack, id);
 }
 
 
+/*
+  This method is start when project is called from command line using main.js
+*/
+var main = function(){
+    attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack, -1);
+}
 
-attackList = parsejson.getParsedjson('./Attack/manifest.json', selectAttack);
+if (require.main === module) {
+    main();
+}
+
+exports.startMain = startMain;

@@ -9,7 +9,7 @@ var file = require('fs');
 	@@Input: httpData object, attack name
 	@@Output: executeFunction of an attack
 */
-var giveDataAttack = function(httpData, attackName){
+var giveDataAttack = function(httpData, attackName, id){
  
   var url = require('./urlUtil.js');
   file.readFile('./Attack/manifest.json', 'utf8', function (err,data) {
@@ -21,12 +21,12 @@ var giveDataAttack = function(httpData, attackName){
    
     //As of now, its hard-coded path
     var attackFile = './Attack/' + parsed[attackName];
-	
-      var attack = require(attackFile);
-      for(var httpDataLength=0; httpDataLength<httpData.length; httpDataLength++){
-       
-	      var attackSend = attack.executeAttack(httpData[httpDataLength]);
-      }
+    var attack = require(attackFile);
+      
+    for(var httpDataLength=0; httpDataLength<httpData.length; httpDataLength++){
+      
+	    var attackSend = attack.executeAttack(httpData[httpDataLength], id);
+    }
     
   });
 }

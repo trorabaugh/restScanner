@@ -26,7 +26,7 @@ var detectionArray = ['error occured',
 					 ];	
 
 //Every attack must implement executeAttack
-var executeAttack = function(httpDataObject){
+var executeAttack = function(httpDataObject, id){
   for(var i=0; i<httpDataObject.query.length; i++){
     for(var j=0;j<injectableList.length;j++){
 		
@@ -57,6 +57,10 @@ var executeAttack = function(httpDataObject){
 				var regExp = new RegExp(detectionArray[detectionIndex]);
 				if(str.match(regExp)){
 					console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
+          var reportTuple = [];
+          reportTuple.push(urlObject.path);
+          reportTuple.push(urlObject.field);
+          report.startReport(reportTuple, id);
                 }
     					
 				}});
@@ -82,6 +86,10 @@ var executeAttack = function(httpDataObject){
                  // console.log(str);
 						      if(str.match(regExp))
 						        console.log("infection found for path:"+urlObject.path+"For field:"+urlObject.field);   /*Here is issue. urlNew is always last urlNew that was updated. So we need new name everytime*/
+                    var reportTuple = [];
+                    reportTuple.push(urlObject.path);
+                    reportTuple.push(urlObject.field);
+                    report.startReport(reportTuple, id);
 		            }
 					    });
 					    res.on('error',function(err){
