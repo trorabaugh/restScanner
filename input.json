@@ -2,10 +2,10 @@
     "data": [
         {
             "URL": "http://www.webscantest.com/datastore/search_get_by_id.php?id=3",
-            "method": "GET",
-            "body": "",
+            "method": "POST",
+            "body": {"test":"test"},
             "HTTPHeader": {
-                "Content-Type": "text/html",
+                "Content-Type": "application/json",
                 "Host": "webscantest.com"
             }
         
