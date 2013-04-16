@@ -40,16 +40,19 @@ var  recreateUrl = function (httpData){
     }
     options.path = tempPath;
   } else if (httpData.method == 'POST'){
-    tempPath = httpData.pathname
-    tempBody = '';
-    for(var i=0; i<httpData.query.length; i++){
-      tempBody = tempBody + httpData.query[i].name + httpData.query[i].seperator + httpData.query[i].value;
-      if(i < (httpData.query.length - 1)){
-        tempBody = tempBody + '&';
+    options.path = httpData.pathname;
+    if (httpData.HTTPHeader['Content-Type'] == 'application/json'){
+      options.body = httpData.json;
+    } else {
+      tempBody = '';
+      for(var i=0; i<httpData.query.length; i++){
+        tempBody = tempBody + httpData.query[i].name + httpData.query[i].seperator + httpData.query[i].value;
+        if(i < (httpData.query.length - 1)){
+          tempBody = tempBody + '&';
+        }
       }
+      options.body = tempBody;
     }
-    options.path = tempPath;
-    options.body = tempBody;
   }
 	
 	var newTemp = {};

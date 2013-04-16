@@ -24,7 +24,6 @@ var restCall = 0;
 */
 var selectAttack = function(attackList, id) {
 
-  console.log(id);
   if(attackName == undefined){
     console.log(restCall);
     console.log("You did not enter attack name");
@@ -84,14 +83,19 @@ var createOptions = function(parsedJson, id) {
         temp.query.push(query);
       }
     } else if(parsedJson.data[i].method == 'POST'){
-      var keys = Object.keys(parsedJson.data[i].body);
-      for(var j=0; j<keys.length; j++){
-        var query = new Object();
-        query.name = keys[j];
-        query.value = parsedJson.data[i].body[keys[j]];
-        query.seperator = '=';
-        temp.query.push(query);
-      }
+      var contentType = parsedJson.data[i].HTTPHeader['Content-Type'];
+      if (contentType == 'application/json'){
+        temp.json = parsedJson.data[i].body;
+      } else {
+        var keys = Object.keys(parsedJson.data[i].body);
+        for(var j=0; j<keys.length; j++){
+          var query = new Object();
+          query.name = keys[j];
+          query.value = parsedJson.data[i].body[keys[j]];
+          query.seperator = '=';
+          temp.query.push(query);
+        }
+      }   
     }
     httpData.push(temp);
   }
