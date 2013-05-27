@@ -8,7 +8,24 @@
                 "Content-Type": "application/json",
                 "Host": "webscantest.com"
             }
-        
-		}
+        }    
+         
+		
+     
+    ],
+    "data": [
+        {
+            "URL": "http://localhost:9000/SQL/appexception.php?get=2",
+            "method": "GET",
+            "body": "",
+            "HTTPHeader": {
+                "Content-Type": "text/html",
+                "Host": "webscantest.com"
+            }
+        }    
+         
+		
+     
     ]
+   
 }
